@@ -1,0 +1,124 @@
+{
+    "android_gradle_plugin_version": "2.2.2",
+    "apk_path": "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\outputs\\apk\\app-debug.apk",
+    "apt": {
+        "app": {
+            "aptArgs": [
+                
+            ],
+            "aptOutput": "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\generated\\source\\apt\\debug",
+            "disableDiscovery": false,
+            "enabled": true,
+            "processor": null,
+            "processorPath": "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\design\\24.2.1\\jars\\classes.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\jars\\classes.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\support-v4\\24.2.1\\jars\\classes.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\support-fragment\\24.2.1\\jars\\classes.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\support-fragment\\24.2.1\\jars\\libs\\internal_impl-24.2.1.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\support-media-compat\\24.2.1\\jars\\classes.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\support-media-compat\\24.2.1\\jars\\libs\\internal_impl-24.2.1.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\support-core-utils\\24.2.1\\jars\\classes.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\support-core-utils\\24.2.1\\jars\\libs\\internal_impl-24.2.1.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\animated-vector-drawable\\24.2.1\\jars\\classes.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\support-vector-drawable\\24.2.1\\jars\\classes.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\recyclerview-v7\\24.2.1\\jars\\classes.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\support-core-ui\\24.2.1\\jars\\classes.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\support-core-ui\\24.2.1\\jars\\libs\\internal_impl-24.2.1.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\24.2.1\\jars\\classes.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\24.2.1\\jars\\libs\\internal_impl-24.2.1.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.jakewharton\\butterknife\\8.4.0\\jars\\classes.jar;C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\intermediates\\exploded-aar\\com.antfortune.freeline\\runtime\\0.8.5\\jars\\classes.jar;C:\\Users\\Administrator\\.gradle\\caches\\modules-2\\files-2.1\\com.jakewharton\\butterknife-annotations\\8.4.0\\ea392375cf9ff59234a82e7928a204215ccc98cd\\butterknife-annotations-8.4.0.jar;C:\\Users\\Administrator\\AppData\\Local\\Android\\sdk\\extras\\android\\m2repository\\com\\android\\support\\support-annotations\\24.2.1\\support-annotations-24.2.1.jar;C:\\Users\\Administrator\\.gradle\\caches\\modules-2\\files-2.1\\com.github.nkzawa\\socket.io-client\\0.6.0\\83de3453382e6c00d5e969ecbad51b8626a47c2e\\socket.io-client-0.6.0.jar;C:\\Users\\Administrator\\.gradle\\caches\\modules-2\\files-2.1\\com.github.nkzawa\\engine.io-client\\0.6.0\\f511467754b7e10d7f1aefc173bfabe3ad67c9ce\\engine.io-client-0.6.0.jar;C:\\Users\\Administrator\\.gradle\\caches\\modules-2\\files-2.1\\com.squareup.okhttp\\okhttp-ws\\2.4.0\\69206d28966656052a982ceded583abdeb41cf63\\okhttp-ws-2.4.0.jar;C:\\Users\\Administrator\\.gradle\\caches\\modules-2\\files-2.1\\com.squareup.okhttp\\okhttp\\2.4.0\\40340c0748190fe897baf7bffbc1b282734294e5\\okhttp-2.4.0.jar;C:\\Users\\Administrator\\.gradle\\caches\\modules-2\\files-2.1\\com.squareup.okio\\okio\\1.4.0\\5b72bf48563ea8410e650de14aa33ff69a3e8c35\\okio-1.4.0.jar;C:\\Users\\Administrator\\.gradle\\caches\\modules-2\\files-2.1\\com.jakewharton\\butterknife-compiler\\8.4.0\\22f40cd3f01849c6deeab0a755d2082b2624581\\butterknife-compiler-8.4.0.jar;C:\\Users\\Administrator\\.gradle\\caches\\modules-2\\files-2.1\\com.google.auto\\auto-common\\0.6\\cf7212b0f8bfef12657b942df8f4f2cf032d3f41\\auto-common-0.6.jar;C:\\Users\\Administrator\\.gradle\\caches\\modules-2\\files-2.1\\com.google.auto.service\\auto-service\\1.0-rc2\\51033a5b8fcf7039159e35b6878f106ccd5fb35f\\auto-service-1.0-rc2.jar;C:\\Users\\Administrator\\.gradle\\caches\\modules-2\\files-2.1\\com.squareup\\javapoet\\1.7.0\\4fdcf1fc27c1a8f55d1109df986c923152f07759\\javapoet-1.7.0.jar;C:\\Users\\Administrator\\AppData\\Local\\Android\\sdk\\extras\\android\\m2repository\\com\\android\\support\\support-annotations\\24.1.0\\support-annotations-24.1.0.jar;C:\\Users\\Administrator\\.gradle\\caches\\modules-2\\files-2.1\\com.google.guava\\guava\\18.0\\cce0823396aa693798f8882e64213b1772032b09\\guava-18.0.jar"
+        }
+    },
+    "apt_libraries": {
+        "dagger": false,
+        "butterknife": true
+    },
+    "auto_dependency": true,
+    "build_cache_dir": "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\freeline",
+    "build_directory": "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build",
+    "build_script": "gradlew.bat :app:assembleDebug",
+    "build_script_work_directory": "",
+    "build_tools_directory": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\build-tools\\25.0.2",
+    "build_tools_version": "25.0.2",
+    "compile_sdk_directory": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\platforms\\android-24",
+    "compile_sdk_version": "android-24",
+    "databinding": [
+        
+    ],
+    "databinding_compiler_jar": "",
+    "databinding_modules": [
+        
+    ],
+    "debug_package": "com.sp.chattingroom",
+    "exclude_dep_res_paths": [
+        
+    ],
+    "extra_dep_res_paths": [
+        
+    ],
+    "freeline_cache_dir": "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom",
+    "freeline_gradle_plugin_version": "0.8.5",
+    "ignore_resource_ids": [
+        "avd_hide_password_1",
+        "avd_hide_password_2",
+        "avd_hide_password_3",
+        "avd_show_password_1",
+        "avd_show_password_2",
+        "avd_show_password_3"
+    ],
+    "java_home": "C:\\Sp\\jdk",
+    "launcher": "com.sp.chattingroom.ChatActivity",
+    "main_assets_directory": [
+        "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\debug\\assets",
+        "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\main\\assets"
+    ],
+    "main_jniLibs_directory": [
+        "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\debug\\jniLibs",
+        "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\main\\jniLibs"
+    ],
+    "main_jni_directory": [
+        "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\debug\\jni",
+        "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\main\\jni"
+    ],
+    "main_manifest_path": "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\main\\AndroidManifest.xml",
+    "main_project_dir": "app",
+    "main_project_name": "app",
+    "main_r_path": "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\build\\generated\\source\\r\\debug\\R.java",
+    "main_res_directory": [
+        "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\debug\\res",
+        "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\main\\res"
+    ],
+    "main_src_directory": [
+        "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\debug\\java",
+        "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\main\\java"
+    ],
+    "module_dependencies": {
+        "app": [
+            
+        ]
+    },
+    "modules": [
+        {
+            "name": "app",
+            "path": "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app"
+        }
+    ],
+    "package": "com.sp.chattingroom",
+    "product_flavor": "",
+    "project_source_sets": {
+        "app": {
+            "main_assets_directory": [
+                "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\debug\\assets",
+                "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\main\\assets"
+            ],
+            "main_jniLibs_directory": [
+                "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\debug\\jniLibs",
+                "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\main\\jniLibs"
+            ],
+            "main_jni_directory": [
+                "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\debug\\jni",
+                "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\main\\jni"
+            ],
+            "main_manifest_path": "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\main\\AndroidManifest.xml",
+            "main_res_directory": [
+                "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\debug\\res",
+                "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\main\\res"
+            ],
+            "main_src_directory": [
+                "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\debug\\java",
+                "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom\\app\\src\\main\\java"
+            ]
+        }
+    },
+    "project_type": "gradle",
+    "retrolambda": {
+        
+    },
+    "root_dir": "C:\\Users\\Administrator\\AndroidStudioProjects\\ChattingRoom",
+    "sdk_directory": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk",
+    "use_jdk8": true
+}
