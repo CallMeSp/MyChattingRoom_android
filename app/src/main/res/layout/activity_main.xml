@@ -4,8 +4,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sp.chattingroom.ChatActivity"
-    android:background="@drawable/chat_background">
+    tools:context="com.sp.chattingroom.ChatActivity">
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -18,17 +17,11 @@
             android:textColor="@android:color/white"
             android:gravity="center"/>
     </android.support.v7.widget.Toolbar>
-    <android.support.v7.widget.RecyclerView
-        android:layout_below="@id/chat_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/text_list"
-        android:scrollbars="none"
-        android:overScrollMode="never"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:id="@+id/sendbar">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -45,4 +38,12 @@
             android:background="@android:color/white"
             android:id="@+id/chat_edit"/>
     </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/chat_toolbar"
+        android:layout_above="@+id/sendbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/text_list"
+        android:scrollbars="none"
+        android:overScrollMode="never"/>
 </RelativeLayout>
