@@ -1,5 +1,10 @@
 package com.sp.chattingroom;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
@@ -35,18 +40,19 @@ public class ChatActivity extends AppCompatActivity {
     private static int PORT=4000;
     private Socket socket=null;
     private ChatRecyclerAdpter adpter;
-    private ArrayList<Msg> msg_list=new ArrayList<Msg>(),msg_list_save=new ArrayList<>();
+    private ArrayList<Msg> msg_list=new ArrayList<>();
     private DBHelper dbHelper;
     private Cursor cursor;
     private Thread thread;
+    private NotificationManager notificationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        notificationManager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         dbHelper=new DBHelper(this);
         cursor=dbHelper.select();
-        Log.e(TAG, "onCreate: cursor.getcount:"+cursor.getCount() );
         for (int i=0;i<cursor.getCount();i++){
             cursor.moveToPosition(i);
             Msg msg=new Msg();
@@ -54,9 +60,6 @@ public class ChatActivity extends AppCompatActivity {
             Log.e(TAG, "onCreate: cursor.getposition("+i+"):"+msg.getContent());
             msg.setType(cursor.getInt(2));
             msg_list.add(msg);
-        }
-        for (int i=0;i<msg_list.size();i++){
-            Log.e(TAG, "onCreate: "+"msglist("+i+"):"+msg_list.get(i).getContent() );
         }
         adpter=new ChatRecyclerAdpter(this,msg_list);
         LinearLayoutManager manager=new LinearLayoutManager(this);
@@ -115,6 +118,7 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void call(Object... args) {
                         String newcontent=args[1].toString();
+                        SendNotification(newcontent);
                         Msg msg=new Msg();
                         msg.setContent(newcontent);
                         msg.setType(0);
@@ -132,12 +136,35 @@ public class ChatActivity extends AppCompatActivity {
     Handler handler=new Handler(){
         @Override
         public void handleMessage(Message message){
-            //msg_list.clear();
-            //msg_list.addAll(msg_list_save);
             adpter.notifyDataSetChanged();
             recyclerView.scrollToPosition(msg_list.size()-1);
         }
     };
+    private void SendNotification(String content){
+        Log.e(TAG, "SendNotification: "+content );
+        /*这里要注意一个细节。
+         *如果当前Activity存在的话，不应该再create一个新的活动，应该是回到当前活动。
+         * 所以要给Intent添加对应的flag
+         */
+
+        Intent i=new Intent(Intent.ACTION_MAIN);
+        i.addCategory(Intent.CATEGORY_LAUNCHER);
+        i.setComponent(new ComponentName(this,ChatActivity.class));
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        PendingIntent p=PendingIntent.getActivity(this,0,i,0);
+        Notification notification=new Notification.Builder(this)
+                .setAutoCancel(true)
+                .setContentText(content)
+                .setContentTitle("新消息")
+                .setTicker("Ticker")
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setContentIntent(p)
+                .build();
+        notificationManager.notify(0,notification);
+    }
+
     @Override
     public void onDestroy(){
         super.onDestroy();
