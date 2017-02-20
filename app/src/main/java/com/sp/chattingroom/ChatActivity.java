@@ -5,8 +5,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +25,8 @@ import com.github.nkzawa.socketio.client.Socket;
 import com.sp.chattingroom.Adapter.ChatRecyclerAdpter;
 import com.sp.chattingroom.Adapter.DBHelper;
 import com.sp.chattingroom.Model.Msg;
+import com.sp.chattingroom.Service.ChatService;
+import com.sp.chattingroom.Service.I_onMessageGet;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -45,6 +49,32 @@ public class ChatActivity extends AppCompatActivity {
     private Cursor cursor;
     private Thread thread;
     private NotificationManager notificationManager;
+    private ChatService.MyBinder binder;
+    private ServiceConnection connection=new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.e(TAG, "onServiceConnected: "+name.toString());
+            binder=(ChatService.MyBinder)service;
+            binder.getMsg(new I_onMessageGet() {
+                @Override
+                public void newMsg(String s) {
+                    Log.e(TAG, "newMsg: "+s );
+                    SendNotification(s);
+                    Msg msg=new Msg();
+                    msg.setContent(s);
+                    msg.setType(0);
+                    msg_list.add(msg);
+                    dbHelper.insert(msg);
+                    cursor.requery();
+                    Message.obtain(handler).sendToTarget();
+                }
+            });
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.e(TAG, "onServiceDisconnected: "+name.toString() );
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +87,7 @@ public class ChatActivity extends AppCompatActivity {
             cursor.moveToPosition(i);
             Msg msg=new Msg();
             msg.setContent(cursor.getString(1));
-            Log.e(TAG, "onCreate: cursor.getposition("+i+"):"+msg.getContent());
+            //Log.e(TAG, "onCreate: cursor.getposition("+i+"):"+msg.getContent());
             msg.setType(cursor.getInt(2));
             msg_list.add(msg);
         }
@@ -65,10 +95,14 @@ public class ChatActivity extends AppCompatActivity {
         LinearLayoutManager manager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adpter);
+        //绑定service
+        Intent startservice=new Intent(this,ChatService.class);
+        bindService(startservice,connection,BIND_AUTO_CREATE);
+
         recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                Log.e(TAG, "onLayoutChange: " );
+                //Log.e(TAG, "onLayoutChange: " );
                 recyclerView.scrollToPosition(msg_list.size()-1);
             }
         });
@@ -76,6 +110,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String msg_send=editText.getText().toString();
+                binder.sendMSg(msg_send);
                 Msg msg=new Msg();
                 msg.setType(1);
                 msg.setContent(msg_send);
@@ -83,7 +118,6 @@ public class ChatActivity extends AppCompatActivity {
                 dbHelper.insert(msg);
                 cursor.requery();
                 Message.obtain(handler).sendToTarget();
-                socket.emit("postMsg",msg_send);
                 editText.setText("");
             }
         });
@@ -101,7 +135,7 @@ public class ChatActivity extends AppCompatActivity {
                 while (!socket.connected()){
                 }
                 Log.e(TAG, "run: "+socket.connected());
-                socket.emit("login","CallMeSp");
+                socket.emit("login","Sp");
                 socket.on("nickExisted", new Emitter.Listener() {
                     @Override
                     public void call(Object... args) {
@@ -131,7 +165,7 @@ public class ChatActivity extends AppCompatActivity {
                 });
             }
         });
-        thread.start();
+        //thread.start();
     }
     Handler handler=new Handler(){
         @Override
@@ -146,7 +180,6 @@ public class ChatActivity extends AppCompatActivity {
          *如果当前Activity存在的话，不应该再create一个新的活动，应该是回到当前活动。
          * 所以要给Intent添加对应的flag
          */
-
         Intent i=new Intent(Intent.ACTION_MAIN);
         i.addCategory(Intent.CATEGORY_LAUNCHER);
         i.setComponent(new ComponentName(this,ChatActivity.class));
@@ -164,12 +197,12 @@ public class ChatActivity extends AppCompatActivity {
                 .build();
         notificationManager.notify(0,notification);
     }
-
     @Override
     public void onDestroy(){
+        unbindService(connection);
         super.onDestroy();
-        Log.e(TAG, "onDestroy: " );
-        socket.disconnect();
-        thread.stop();
+        Log.e(TAG, "onDestroy");
+
+        finish();
     }
 }
