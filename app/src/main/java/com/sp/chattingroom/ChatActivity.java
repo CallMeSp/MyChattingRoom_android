@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
@@ -27,14 +26,10 @@ import com.sp.chattingroom.Adapter.DBHelper;
 import com.sp.chattingroom.Model.Msg;
 import com.sp.chattingroom.Service.ChatService;
 import com.sp.chattingroom.Service.I_onMessageGet;
-
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 public class ChatActivity extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
     @BindView(R.id.text_list)RecyclerView recyclerView;
@@ -87,7 +82,6 @@ public class ChatActivity extends AppCompatActivity {
             cursor.moveToPosition(i);
             Msg msg=new Msg();
             msg.setContent(cursor.getString(1));
-            //Log.e(TAG, "onCreate: cursor.getposition("+i+"):"+msg.getContent());
             msg.setType(cursor.getInt(2));
             msg_list.add(msg);
         }
@@ -98,11 +92,9 @@ public class ChatActivity extends AppCompatActivity {
         //绑定service
         Intent startservice=new Intent(this,ChatService.class);
         bindService(startservice,connection,BIND_AUTO_CREATE);
-
         recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                //Log.e(TAG, "onLayoutChange: " );
                 recyclerView.scrollToPosition(msg_list.size()-1);
             }
         });
@@ -121,51 +113,6 @@ public class ChatActivity extends AppCompatActivity {
                 editText.setText("");
             }
         });
-        thread=new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Log.e(TAG, "onCreate: start" );
-                    socket= IO.socket("http://115.159.38.75:4000");
-                    socket.connect();
-                }catch (URISyntaxException e){
-                    Log.e(TAG, "run: "+"error" );
-                    e.printStackTrace();
-                }
-                while (!socket.connected()){
-                }
-                Log.e(TAG, "run: "+socket.connected());
-                socket.emit("login","Sp");
-                socket.on("nickExisted", new Emitter.Listener() {
-                    @Override
-                    public void call(Object... args) {
-                        Log.e(TAG, "nickExisted" );
-                    }
-                });
-                socket.on("loginSuccess", new Emitter.Listener() {
-                    @Override
-                    public void call(Object... args) {
-                        Log.e(TAG, "loginSuccess:"+Thread.currentThread().getStackTrace());
-                    }
-                });
-                socket.on("newMsg", new Emitter.Listener() {
-                    @Override
-                    public void call(Object... args) {
-                        String newcontent=args[1].toString();
-                        SendNotification(newcontent);
-                        Msg msg=new Msg();
-                        msg.setContent(newcontent);
-                        msg.setType(0);
-                        msg_list.add(msg);
-                        dbHelper.insert(msg);
-                        cursor.requery();
-                        Log.e(TAG, "call: "+cursor.getCount());
-                        Message.obtain(handler).sendToTarget();
-                    }
-                });
-            }
-        });
-        //thread.start();
     }
     Handler handler=new Handler(){
         @Override
@@ -202,7 +149,5 @@ public class ChatActivity extends AppCompatActivity {
         unbindService(connection);
         super.onDestroy();
         Log.e(TAG, "onDestroy");
-
-        finish();
     }
 }
