@@ -18,15 +18,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
+
 import com.github.nkzawa.socketio.client.Socket;
 import com.sp.chattingroom.Adapter.ChatRecyclerAdpter;
 import com.sp.chattingroom.Adapter.DBHelper;
+import com.sp.chattingroom.Model.LogUtil;
 import com.sp.chattingroom.Model.Msg;
 import com.sp.chattingroom.Service.ChatService;
 import com.sp.chattingroom.Service.I_onMessageGet;
-import java.net.URISyntaxException;
+
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +48,7 @@ public class ChatActivity extends AppCompatActivity {
     private ServiceConnection connection=new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.e(TAG, "onServiceConnected: "+name.toString());
+            LogUtil.log("from util","onServiceConnected: "+name.toString());
             binder=(ChatService.MyBinder)service;
             binder.getMsg(new I_onMessageGet() {
                 @Override
@@ -67,13 +67,13 @@ public class ChatActivity extends AppCompatActivity {
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            Log.e(TAG, "onServiceDisconnected: "+name.toString() );
+            LogUtil.log(TAG, "onServiceDisconnected: "+name.toString());
         }
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.chatactivity);
         ButterKnife.bind(this);
         notificationManager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         dbHelper=new DBHelper(this);
@@ -92,6 +92,7 @@ public class ChatActivity extends AppCompatActivity {
         //绑定service
         Intent startservice=new Intent(this,ChatService.class);
         bindService(startservice,connection,BIND_AUTO_CREATE);
+
         recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -122,7 +123,7 @@ public class ChatActivity extends AppCompatActivity {
         }
     };
     private void SendNotification(String content){
-        Log.e(TAG, "SendNotification: "+content );
+        LogUtil.log(TAG, "SendNotification: "+content );
         /*这里要注意一个细节。
          *如果当前Activity存在的话，不应该再create一个新的活动，应该是回到当前活动。
          * 所以要给Intent添加对应的flag

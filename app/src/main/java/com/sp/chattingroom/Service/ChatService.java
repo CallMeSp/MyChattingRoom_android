@@ -11,6 +11,7 @@ import android.util.Log;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.sp.chattingroom.Model.LogUtil;
 
 import java.net.URISyntaxException;
 
@@ -22,10 +23,21 @@ public class ChatService extends Service {
     private static final String TAG = "ChatService";
     private MyBinder binder=new MyBinder();
     private Socket socket=null;
+    private boolean result=true;
     @Override
     public void onCreate(){
         super.onCreate();
-        Log.e(TAG, "onCreate: " );
+        try {
+            Log.e(TAG, "test:start" );
+            socket= IO.socket("http://115.159.38.75:4000");
+            socket.connect();
+        }catch (URISyntaxException e){
+            Log.e(TAG, "run: "+"error" );
+            e.printStackTrace();
+        }
+        while (!socket.connected()){}
+        Log.e(TAG, "inner oncreate: "+socket.connected());
+        Log.e(TAG, "onCreate: " +this.getClass().getName());
     }
     @Override
     public int onStartCommand(Intent i,int flags,int startId){
@@ -47,31 +59,6 @@ public class ChatService extends Service {
     }
     public class MyBinder extends Binder{
         public void getMsg(final I_onMessageGet i_onMessageGet){
-            try {
-                Log.e(TAG, "test:start" );
-                socket= IO.socket("http://115.159.38.75:4000");
-                socket.connect();
-            }catch (URISyntaxException e){
-                Log.e(TAG, "run: "+"error" );
-                e.printStackTrace();
-            }
-            while (!socket.connected()){
-            }
-            Log.e(TAG, "run: "+socket.connected());
-            socket.emit("login","Sp");
-            socket.on("nickExisted", new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.e(TAG, "nickExisted" );
-                }
-            });
-            Emitter.Listener testlistener=new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.e(TAG, "loginSuccess:"+Thread.currentThread().getId());
-                }
-            };
-            socket.on("loginSuccess", testlistener);
             socket.on("newMsg", new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
@@ -82,6 +69,26 @@ public class ChatService extends Service {
         }
         public void sendMSg(String msg){
             socket.emit("postMsg",msg);
+        }
+        public void login(String name){
+            socket.emit("login",name);
+        }
+        public void getLoginResult(final I_loginResult i_loginResult){
+            socket.on("nickExisted", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    Log.e(TAG, "nickExisted" );
+                    i_loginResult.loginFailed();
+                    result=false;
+                }
+            });
+            socket.on("loginSuccess",new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    Log.e(TAG, "loginSuccess:"+Thread.currentThread().getId());
+                    i_loginResult.loginSuccess();
+                }
+            });
         }
     }
 }
