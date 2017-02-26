@@ -6,13 +6,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Message;
-import android.util.Log;
 
-import com.sp.chattingroom.Model.LogUtil;
-import com.sp.chattingroom.Model.Msg;
 import com.sp.chattingroom.Service.ChatService;
-import com.sp.chattingroom.Service.I_onMessageGet;
 
 /**
  * Created by Administrator on 2017/2/22.

@@ -22,7 +22,7 @@ import android.widget.EditText;
 import com.github.nkzawa.socketio.client.Socket;
 import com.sp.chattingroom.Adapter.ChatRecyclerAdpter;
 import com.sp.chattingroom.Adapter.DBHelper;
-import com.sp.chattingroom.Model.LogUtil;
+import com.sp.chattingroom.base.LogUtil;
 import com.sp.chattingroom.Model.Msg;
 import com.sp.chattingroom.Service.ChatService;
 import com.sp.chattingroom.Service.I_onMessageGet;

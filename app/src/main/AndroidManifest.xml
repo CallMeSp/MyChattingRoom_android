@@ -11,9 +11,13 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ChatActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

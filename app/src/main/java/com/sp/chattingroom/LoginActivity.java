@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -13,10 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.sp.chattingroom.Model.LogUtil;
+import com.sp.chattingroom.base.LogUtil;
 import com.sp.chattingroom.Service.ChatService;
 import com.sp.chattingroom.Service.I_loginResult;
-import com.sp.chattingroom.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +34,6 @@ public class LoginActivity extends Activity {
             LogUtil.log(TAG,"onServiceConnected");
             myBinder=(ChatService.MyBinder)service;
         }
-
         @Override
         public void onServiceDisconnected(ComponentName name) {
             LogUtil.log(TAG,"onServiceDisconnected");
@@ -75,4 +74,50 @@ public class LoginActivity extends Activity {
             Toast.makeText(LoginActivity.this,"用户名重复",Toast.LENGTH_SHORT).show();
         }
     };
+    @Override
+    protected void onStart(){
+        LogUtil.log(TAG,"onStart");
+        super.onStart();
+    }
+    @Override
+    protected void onResume(){
+        LogUtil.log(TAG,"onResume");
+        super.onResume();
+    }
+    @Override
+    protected void onPause(){
+        LogUtil.log(TAG,"onPause");
+        super.onPause();
+    }
+    @Override
+    protected void onStop(){
+        LogUtil.log(TAG,"onStop");
+        super.onStop();
+    }
+    @Override
+    protected void onRestart(){
+        LogUtil.log(TAG,"onRestart");
+        super.onRestart();
+    }
+    @Override
+    protected void onDestroy(){
+        LogUtil.log(TAG,"onDestroy");
+        super.onDestroy();
+        unbindService(serviceConnection);
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        LogUtil.log(TAG,"onSaveInstance");
+        super.onSaveInstanceState(outState);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        LogUtil.log(TAG,"onRestoreInstance");
+        super.onSaveInstanceState(savedInstanceState);
+    }
+    @Override
+    public void onConfigurationChanged(Configuration configuration){
+        super.onConfigurationChanged(configuration);
+        LogUtil.log(TAG,"onConfigurationChanged:"+configuration.orientation);
+    }
 }

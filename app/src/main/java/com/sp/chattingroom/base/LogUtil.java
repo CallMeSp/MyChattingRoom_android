@@ -1,4 +1,4 @@
-package com.sp.chattingroom.Model;
+package com.sp.chattingroom.base;
 
 import android.util.Log;
 
