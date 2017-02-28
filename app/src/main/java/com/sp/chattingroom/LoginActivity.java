@@ -18,6 +18,8 @@ import com.sp.chattingroom.base.LogUtil;
 import com.sp.chattingroom.Service.ChatService;
 import com.sp.chattingroom.Service.I_loginResult;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 /**
