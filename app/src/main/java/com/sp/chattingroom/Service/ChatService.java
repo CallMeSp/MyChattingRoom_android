@@ -22,7 +22,6 @@ import java.net.URISyntaxException;
 
 public class ChatService extends Service {
     private static final String TAG = "ChatService";
-    private MyBinder binder=new MyBinder();
     private Socket socket=null;
     private I_GetLoginResult i_getLoginResult;
     private I_NewMessageArrived i_newMessageArrived;
@@ -62,10 +61,6 @@ public class ChatService extends Service {
         @Override
         public void registerNewMsgListener(I_NewMessageArrived listener) throws RemoteException {
             i_newMessageArrived=listener;
-        }
-        @Override
-        public void registerLoginResultListener(I_GetLoginResult listener) throws RemoteException {
-            i_getLoginResult=listener;
         }
     };
     @Override
@@ -114,47 +109,5 @@ public class ChatService extends Service {
     @Override
     public IBinder onBind(Intent intent){
         return mBinder;
-    }
-        /*
-         *在获取信息和获取登陆结果用了两个interface来回调结果
-         */
-    public class MyBinder extends Binder{
-        /*
-         *用于获取新信息
-         */
-        public void getMsg(final I_onMessageGet i_onMessageGet){
-            socket.on("newMsg", new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    String newcontent=args[1].toString();
-                    i_onMessageGet.newMsg(newcontent);
-                }
-            });
-        }
-        public void sendMSg(String msg){
-            socket.emit("postMsg",msg);
-        }
-        public void login(String name){
-            socket.emit("login",name);
-        }
-        /*
-         *获取登陆结果
-         */
-        public void getLoginResult(final I_loginResult i_loginResult){
-            socket.on("nickExisted", new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.e(TAG, "nickExisted" );
-                    i_loginResult.loginFailed();
-                }
-            });
-            socket.on("loginSuccess",new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.e(TAG, "loginSuccess:"+Thread.currentThread().getId());
-                    i_loginResult.loginSuccess();
-                }
-            });
-        }
     }
 }

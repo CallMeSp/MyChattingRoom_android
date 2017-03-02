@@ -17,9 +17,6 @@ import android.widget.Toast;
 
 import com.sp.chattingroom.base.LogUtil;
 import com.sp.chattingroom.Service.ChatService;
-import com.sp.chattingroom.Service.I_loginResult;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +28,6 @@ public class LoginActivity extends Activity {
     @BindView(R.id.edt_username)EditText editText;
     private static final String TAG = "LoginActivity";
     private IChatManager mRemoteManager;
-    private ChatService.MyBinder myBinder;
     private I_GetLoginResult mResultListener=new I_GetLoginResult.Stub(){
         @Override
         public void loginSucceed() throws RemoteException {
@@ -50,12 +46,6 @@ public class LoginActivity extends Activity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             LogUtil.log(TAG,"onServiceConnected");
             mRemoteManager=IChatManager.Stub.asInterface(service);
-            /*try {
-                //mRemoteManager=manager;
-                mRemoteManager.registerLoginResultListener(mResultListener);
-            }catch (RemoteException e){
-                e.printStackTrace();
-            }*/
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -80,20 +70,6 @@ public class LoginActivity extends Activity {
                 catch (RemoteException e){
                     e.printStackTrace();
                 }
-                /*myBinder.login(name);
-                myBinder.getLoginResult(new I_loginResult() {
-                    @Override
-                    public void loginSuccess() {
-                        Intent intent=new Intent(LoginActivity.this,ChatActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                    @Override
-                    public void loginFailed() {
-                        handler.obtainMessage().sendToTarget();
-
-                    }
-                });*/
             }
         });
     }

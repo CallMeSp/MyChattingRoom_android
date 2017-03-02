@@ -26,7 +26,6 @@ import com.sp.chattingroom.Adapter.DBHelper;
 import com.sp.chattingroom.base.LogUtil;
 import com.sp.chattingroom.Model.Msg;
 import com.sp.chattingroom.Service.ChatService;
-import com.sp.chattingroom.Service.I_onMessageGet;
 
 import java.util.ArrayList;
 import butterknife.BindView;
@@ -45,7 +44,6 @@ public class ChatActivity extends AppCompatActivity {
     private Cursor cursor;
     private Thread thread;
     private NotificationManager notificationManager;
-    private ChatService.MyBinder binder;
     private IChatManager iChatManager;
     private I_NewMessageArrived i_newMessageArrived=new I_NewMessageArrived.Stub(){
         @Override
