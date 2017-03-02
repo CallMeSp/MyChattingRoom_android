@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.RemoteException;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,15 +30,36 @@ public class LoginActivity extends Activity {
     @BindView(R.id.btn_login)Button button;
     @BindView(R.id.edt_username)EditText editText;
     private static final String TAG = "LoginActivity";
+    private IChatManager mRemoteManager;
     private ChatService.MyBinder myBinder;
+    private I_GetLoginResult mResultListener=new I_GetLoginResult.Stub(){
+        @Override
+        public void loginSucceed() throws RemoteException {
+            LogUtil.log(TAG,"log suc");
+            Intent intent=new Intent(LoginActivity.this,ChatActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        @Override
+        public void loginFailed() throws RemoteException {
+            handler.obtainMessage().sendToTarget();
+        }
+    };
     private ServiceConnection serviceConnection=new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             LogUtil.log(TAG,"onServiceConnected");
-            myBinder=(ChatService.MyBinder)service;
+            mRemoteManager=IChatManager.Stub.asInterface(service);
+            /*try {
+                //mRemoteManager=manager;
+                mRemoteManager.registerLoginResultListener(mResultListener);
+            }catch (RemoteException e){
+                e.printStackTrace();
+            }*/
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            mRemoteManager=null;
             LogUtil.log(TAG,"onServiceDisconnected");
         }
     };
@@ -52,7 +74,13 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String name=editText.getText().toString();
-                myBinder.login(name);
+                try {
+                    mRemoteManager.Login(name, mResultListener);
+                }
+                catch (RemoteException e){
+                    e.printStackTrace();
+                }
+                /*myBinder.login(name);
                 myBinder.getLoginResult(new I_loginResult() {
                     @Override
                     public void loginSuccess() {
@@ -65,7 +93,7 @@ public class LoginActivity extends Activity {
                         handler.obtainMessage().sendToTarget();
 
                     }
-                });
+                });*/
             }
         });
     }

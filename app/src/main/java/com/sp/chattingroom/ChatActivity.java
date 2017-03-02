@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -45,25 +46,28 @@ public class ChatActivity extends AppCompatActivity {
     private Thread thread;
     private NotificationManager notificationManager;
     private ChatService.MyBinder binder;
+    private IChatManager iChatManager;
+    private I_NewMessageArrived i_newMessageArrived=new I_NewMessageArrived.Stub(){
+        @Override
+        public void newMessageArrive(Msg msg) throws RemoteException {
+            Log.e(TAG, "newMsg: "+msg.getContent());
+            SendNotification(msg.getContent());
+            msg_list.add(msg);
+            dbHelper.insert(msg);
+            cursor.requery();
+            Message.obtain(handler).sendToTarget();
+        }
+    };
     private ServiceConnection connection=new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             LogUtil.log("from util","onServiceConnected: "+name.toString());
-            binder=(ChatService.MyBinder)service;
-            binder.getMsg(new I_onMessageGet() {
-                @Override
-                public void newMsg(String s) {
-                    Log.e(TAG, "newMsg: "+s );
-                    SendNotification(s);
-                    Msg msg=new Msg(0,s);
-                    //msg.setContent(s);
-                    //msg.setType(0);
-                    msg_list.add(msg);
-                    dbHelper.insert(msg);
-                    cursor.requery();
-                    Message.obtain(handler).sendToTarget();
-                }
-            });
+            iChatManager=IChatManager.Stub.asInterface(service);
+            try {
+                iChatManager.registerNewMsgListener(i_newMessageArrived);
+            }catch (RemoteException e){
+                e.printStackTrace();
+            }
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -103,8 +107,13 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String msg_send=editText.getText().toString();
-                binder.sendMSg(msg_send);
+                //binder.sendMSg(msg_send);
                 Msg msg=new Msg(1,msg_send);
+                try {
+                    iChatManager.SendMsg(msg);
+                }catch (RemoteException e){
+                    e.printStackTrace();
+                }
                 //msg.setType(1);
                 //msg.setContent(msg_send);
                 msg_list.add(msg);
@@ -150,5 +159,12 @@ public class ChatActivity extends AppCompatActivity {
         unbindService(connection);
         super.onDestroy();
         Log.e(TAG, "onDestroy");
+    }
+    @Override
+    public void onBackPressed(){
+        Intent home = new Intent(Intent.ACTION_MAIN);
+        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        home.addCategory(Intent.CATEGORY_HOME);
+        startActivity(home);
     }
 }
