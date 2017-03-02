@@ -55,9 +55,9 @@ public class ChatActivity extends AppCompatActivity {
                 public void newMsg(String s) {
                     Log.e(TAG, "newMsg: "+s );
                     SendNotification(s);
-                    Msg msg=new Msg();
-                    msg.setContent(s);
-                    msg.setType(0);
+                    Msg msg=new Msg(0,s);
+                    //msg.setContent(s);
+                    //msg.setType(0);
                     msg_list.add(msg);
                     dbHelper.insert(msg);
                     cursor.requery();
@@ -80,9 +80,9 @@ public class ChatActivity extends AppCompatActivity {
         cursor=dbHelper.select();
         for (int i=0;i<cursor.getCount();i++){
             cursor.moveToPosition(i);
-            Msg msg=new Msg();
-            msg.setContent(cursor.getString(1));
-            msg.setType(cursor.getInt(2));
+            Msg msg=new Msg(cursor.getInt(2),cursor.getString(1));
+            //msg.setContent(cursor.getString(1));
+            //msg.setType(cursor.getInt(2));
             msg_list.add(msg);
         }
         adpter=new ChatRecyclerAdpter(this,msg_list);
@@ -104,9 +104,9 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String msg_send=editText.getText().toString();
                 binder.sendMSg(msg_send);
-                Msg msg=new Msg();
-                msg.setType(1);
-                msg.setContent(msg_send);
+                Msg msg=new Msg(1,msg_send);
+                //msg.setType(1);
+                //msg.setContent(msg_send);
                 msg_list.add(msg);
                 dbHelper.insert(msg);
                 cursor.requery();
