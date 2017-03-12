@@ -1,7 +1,9 @@
 package com.sp.chattingroom;
 
 import android.app.Activity;
+import android.app.IntentService;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
@@ -15,15 +17,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.sp.chattingroom.base.BaseActivity;
 import com.sp.chattingroom.base.LogUtil;
 import com.sp.chattingroom.Service.ChatService;
+import com.sp.chattingroom.base.MyApplication;
+import com.squareup.leakcanary.RefWatcher;
+
+import java.util.ArrayList;
+import java.util.Stack;
+import java.util.TreeSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2017/2/21.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseActivity {
     @BindView(R.id.btn_login)Button button;
     @BindView(R.id.edt_username)EditText editText;
     private static final String TAG = "LoginActivity";

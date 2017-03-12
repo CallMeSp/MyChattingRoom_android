@@ -13,6 +13,7 @@ import com.sp.chattingroom.IChatManager;
 import com.sp.chattingroom.I_GetLoginResult;
 import com.sp.chattingroom.I_NewMessageArrived;
 import com.sp.chattingroom.Model.Msg;
+import com.sp.chattingroom.base.LogUtil;
 
 import java.net.URISyntaxException;
 
@@ -25,6 +26,7 @@ public class ChatService extends Service {
     private Socket socket=null;
     private I_GetLoginResult i_getLoginResult;
     private I_NewMessageArrived i_newMessageArrived;
+    private String username="";
     private Binder mBinder=new IChatManager.Stub(){
         @Override
         public void SendMsg(Msg msg) throws RemoteException {
@@ -32,6 +34,7 @@ public class ChatService extends Service {
         }
         @Override
         public void Login(String name, final I_GetLoginResult listener) throws RemoteException {
+            username=name;
             i_getLoginResult=listener;
             socket.emit("login",name);
             socket.on("nickExisted", new Emitter.Listener() {
@@ -109,5 +112,21 @@ public class ChatService extends Service {
     @Override
     public IBinder onBind(Intent intent){
         return mBinder;
+    }
+    public void CheckState(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    LogUtil.log(TAG,"logxunhuan");
+                    socket.emit("login",username);
+                    try {
+                        Thread.sleep(5000);
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 }

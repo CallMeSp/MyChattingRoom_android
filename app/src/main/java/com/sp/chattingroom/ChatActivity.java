@@ -1,17 +1,19 @@
 package com.sp.chattingroom;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,14 +25,17 @@ import android.widget.EditText;
 import com.github.nkzawa.socketio.client.Socket;
 import com.sp.chattingroom.Adapter.ChatRecyclerAdpter;
 import com.sp.chattingroom.Adapter.DBHelper;
+import com.sp.chattingroom.base.BaseActivity;
 import com.sp.chattingroom.base.LogUtil;
 import com.sp.chattingroom.Model.Msg;
 import com.sp.chattingroom.Service.ChatService;
+import com.sp.chattingroom.base.MyApplication;
 
+import java.net.URL;
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends BaseActivity {
     private static final String TAG = "ChatActivity";
     @BindView(R.id.text_list)RecyclerView recyclerView;
     @BindView(R.id.send_btn)Button button;
@@ -48,7 +53,7 @@ public class ChatActivity extends AppCompatActivity {
     private I_NewMessageArrived i_newMessageArrived=new I_NewMessageArrived.Stub(){
         @Override
         public void newMessageArrive(Msg msg) throws RemoteException {
-            Log.e(TAG, "newMsg: "+msg.getContent());
+            LogUtil.log(TAG, "newMsg: "+msg.getContent());
             SendNotification(msg.getContent());
             msg_list.add(msg);
             dbHelper.insert(msg);
@@ -74,6 +79,7 @@ public class ChatActivity extends AppCompatActivity {
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LogUtil.log(TAG,"onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chatactivity);
         ButterKnife.bind(this);
@@ -156,7 +162,7 @@ public class ChatActivity extends AppCompatActivity {
     public void onDestroy(){
         unbindService(connection);
         super.onDestroy();
-        Log.e(TAG, "onDestroy");
+        LogUtil.log(TAG, "onDestroy");
     }
     @Override
     public void onBackPressed(){
@@ -164,5 +170,69 @@ public class ChatActivity extends AppCompatActivity {
         home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         home.addCategory(Intent.CATEGORY_HOME);
         startActivity(home);
+    }
+    @Override
+    protected void onStart(){
+        LogUtil.log(TAG,"onStart");
+        super.onStart();
+    }
+    @Override
+    protected void onResume(){
+        LogUtil.log(TAG,"onResume");
+        super.onResume();
+    }
+    @Override
+    protected void onPause(){
+        LogUtil.log(TAG,"onPause");
+        super.onPause();
+    }
+    @Override
+    protected void onStop(){
+        LogUtil.log(TAG,"onStop");
+        super.onStop();
+    }
+    @Override
+    protected void onRestart(){
+        LogUtil.log(TAG,"onRestart");
+        super.onRestart();
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        LogUtil.log(TAG,"onSaveInstance");
+        outState.putInt("IntTest", 0);
+        outState.putString("StrTest", "savedInstanceState test");
+        super.onSaveInstanceState(outState);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        LogUtil.log(TAG,"onRestoreInstance");
+        int IntTest = savedInstanceState.getInt("IntTest");
+        String StrTest = savedInstanceState.getString("StrTest");
+        Log.e(TAG, "onRestoreInstanceState+IntTest="+IntTest+"+StrTest="+StrTest);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+    @Override
+    public void onConfigurationChanged(Configuration configuration){
+        super.onConfigurationChanged(configuration);
+        LogUtil.log(TAG,"onConfigurationChanged:"+configuration.orientation);
+        new Download().execute();
+    }
+    class Download extends AsyncTask<URL,Integer,Long>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected Long doInBackground(URL... params) {
+            return null;
+        }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+        @Override
+        protected void onPostExecute(Long aLong) {
+            super.onPostExecute(aLong);
+        }
     }
 }
